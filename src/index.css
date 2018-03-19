@@ -40,11 +40,60 @@ ol, ul {
   background: #ddd;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
 .game-info {
   margin-left: 20px;
+}
+
+/****** al meu *****/
+
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.scoreBoard table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    font-weight: normal;
+}
+
+.scoreBoard table td, .scoreBoard table th {
+    padding: 2px 5px;
+    font-size: 13px;
+}
+
+.scoreBoard table td:first-child, .scoreBoard table th:first-child {
+    width: 9px;
+}
+
+.scoreBoard table th {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.scoreBoard table td:nth-child(2n+1) {
+    width: 9px;
+    font-family: Helvetica;
+}
+
+.scoreBoard table td:nth-child(2n+2) {
+    width: 30px;
+    font-family: Helvetica;
+}
+
+.scoreBoard table td.bid.wrong {
+    text-decoration: line-through;
+}
+
+.scoreBoard table td.bid.prize {
+    background-color: #d0efd0;
 }
