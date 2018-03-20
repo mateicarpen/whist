@@ -102,7 +102,7 @@ export default class ScoreBoard extends React.Component {
 			// check if hand was won
 			let bid = this.props.history[round]['bids'][playerNo];
 			let actual = this.props.history[round]['scores'][playerNo];
-			if (bid !== actual || (checkLostInstead && bid === actual)) {
+			if ((!checkLostInstead && bid !== actual) || (checkLostInstead && bid === actual)) {
 				return false;
 			}
 
@@ -120,7 +120,7 @@ export default class ScoreBoard extends React.Component {
 		// check if hand was won
 		let bid = this.props.history[round]['bids'][playerNo];
 		let actual = this.props.history[round]['scores'][playerNo];
-		if (bid !== actual || (checkLostInstead && bid === actual)) {
+		if ((!checkLostInstead && bid !== actual) || (checkLostInstead && bid === actual)) {
 			return true;
 		}
 
