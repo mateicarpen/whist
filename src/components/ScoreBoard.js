@@ -4,11 +4,11 @@ export default class ScoreBoard extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.calculateScore = this.calculateScore.bind(this);
+		this.calculateScores = this.calculateScores.bind(this);
 	}
 
 	render() {
-		console.log(this.props);
+		let scores = this.calculateScores();
 
 		return (
 			<div className="scoreBoard">
@@ -29,15 +29,11 @@ export default class ScoreBoard extends React.Component {
 								<tr>
 									<td>{round}</td>
 									{ this.props.players.map(function(name, playerNo) {
-										let score = this.calculateScore(roundNo, playerNo);
-										let bid = this.props.history[roundNo] ? this.props.history[roundNo]['bids'][playerNo] : '';
-										let actual = this.props.history[roundNo] && this.props.history[roundNo]['scores'] ? this.props.history[roundNo]['scores'][playerNo] : ''
-										let isWrong = this.props.history[roundNo] && bid !== actual;
-										let shouldGetPrize = this.props.history[roundNo] && this.props.history[roundNo]['scores'] && this.shouldGetPrize(roundNo, playerNo);
+										let score = scores[roundNo][playerNo];
 
 										return [
-											<td className="score">{ score }</td>,
-											<td className={"bid " + (isWrong ? 'wrong' : '') + (shouldGetPrize ? "prize" : "")}>{ bid }</td>
+											<td className="score">{ score.score }</td>,
+											<td className={"bid " + (score.wrong ? 'wrong ' : '') + (score.positivePrize ? "positivePrize " : "") + (score.negativePrize ? "negativePrize " : "")}>{ score.bid }</td>
 										];
 									}.bind(this)) }
 								</tr>
@@ -49,81 +45,87 @@ export default class ScoreBoard extends React.Component {
 		);
 	}
 
-	calculateScore(roundNo, playerNo) {
-		if (!this.props.history[roundNo] || !this.props.history[roundNo]['scores']) {
-			return null;
-		}
-
-		let score = 0;
-
-		for (let i = 0; i <= roundNo; i++) {
-			let bid = this.props.history[i]['bids'][playerNo];
-			let actual = this.props.history[i]['scores'][playerNo]
-		
-			if (bid === actual) {
-				score += 5 + parseInt(bid);
-				
-				if (this.shouldGetPrize(i, playerNo)) {
-					score += 10;
-				}
-			} else {
-				score -= Math.abs(bid - actual);
-				
-				if (this.shouldGetPrize(i, playerNo)) {
-					score -= 10;
-				}
-			}
-		}
-
-		return score;
-	}
-
-	// TODO: refactor this
-	shouldGetPrize(roundNo, playerNo) {
-		if (!this.props.history[roundNo] || !this.props.history[roundNo]['scores']) {
-			return null;
-		}
-
-		let wonHandsNeeded = 5;
-		let round = roundNo;
+	/**
+	 * Returns an array of type:
+	 * scores[round][player] = {
+	 *   score: 50, 
+	 *   wrong: false, 
+	 *   prize: true
+	 * }
+	 *
+	 * @return array
+	 */
+	calculateScores() {
+		let scores = [];
 		let totalRounds = this.props.rounds.length;
-		let playersNo = this.props.players.length;
+		let totalPlayers = this.props.players.length;
 
-		let lastBid = this.props.history[roundNo]['bids'][playerNo];
-		let lastActual = this.props.history[roundNo]['scores'][playerNo];
-		let checkLostInstead = (lastBid !== lastActual);
+		for (let player = 0; player < totalPlayers; player++) {
+			let wonInARow = 0;
+			let lostInARow = 0;
+			let score = 0;
 
-		while (wonHandsNeeded) {
-			// check if it's a 1-card game (no prize given for those)
-			if (round < playersNo || round >= totalRounds - playersNo) {
-				return false;
+			for (let round = 0; round < totalRounds; round++) {
+				let bid;
+				let wrong = false;
+				let positivePrize = false;
+				let negativePrize = false;
+
+				if (this.props.history[round] && this.props.history[round]['scores']) {
+					bid = this.props.history[round]['bids'][player];
+					let actual = this.props.history[round]['scores'][player]; // TODO: rename all to 'actual'?
+					let cardsPerRound = this.props.rounds[round];
+
+					if (bid === actual) {
+						score += 5 + parseInt(bid);
+						lostInARow = 0;
+
+						if (cardsPerRound > 1) {
+							wonInARow++;
+						}
+
+						if (wonInARow === 5) {
+							score += 10;
+							positivePrize = true;
+							wonInARow = 0;
+						}
+					} else {
+						score -= Math.abs(parseInt(bid) - parseInt(actual));
+						wrong = true;
+						wonInARow = 0;
+						
+						if (cardsPerRound > 1) {
+							lostInARow++;
+						}
+
+						if (lostInARow === 5) {
+							score -= 10;
+							negativePrize = true;
+							lostInARow = 0;
+						}
+					}
+				} else {
+					score = null;
+
+					if (this.props.history[round]) {
+						bid = this.props.history[round]['bids'][player];
+					}
+				}
+
+				if (!scores[round]) {
+					scores[round] = [];
+				}
+
+				scores[round][player] = {
+					bid: bid,
+					score: score,
+					wrong: wrong,
+					positivePrize: positivePrize,
+					negativePrize: negativePrize,
+				};
 			}
-
-			// check if hand was won
-			let bid = this.props.history[round]['bids'][playerNo];
-			let actual = this.props.history[round]['scores'][playerNo];
-			if ((!checkLostInstead && bid !== actual) || (checkLostInstead && bid === actual)) {
-				return false;
-			}
-
-			round--;
-			wonHandsNeeded--;
 		}
 
-		// next round needs to be lost, so that we only award the prize once
-		
-		// check if it's a 1-card game (no prize given for those)
-		if (round < playersNo || round >= totalRounds - playersNo) {
-			return true;
-		}
-
-		// check if hand was won
-		let bid = this.props.history[round]['bids'][playerNo];
-		let actual = this.props.history[round]['scores'][playerNo];
-		if ((!checkLostInstead && bid !== actual) || (checkLostInstead && bid === actual)) {
-			return true;
-		}
-
-		return false;
+		return scores;
 	}
 }

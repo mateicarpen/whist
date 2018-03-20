@@ -94,6 +94,10 @@ ol, ul {
     text-decoration: line-through;
 }
 
-.scoreBoard table td.bid.prize {
+.scoreBoard table td.bid.positivePrize {
     background-color: #d0efd0;
+}
+
+.scoreBoard table td.bid.negativePrize {
+    background-color: #ffb8b8;
 }
