@@ -29,7 +29,7 @@ export default class ScoringRound extends React.Component {
 		this.props.scoreRound(this.state.scores);
 	}
 
-	renderScoreOptions(player) {
+	renderScoreOptions(playerId) {
 		let options = [];
 		for (let i = 0; i <= this.props.cards; i++) {
 			options.push(i);
@@ -39,8 +39,8 @@ export default class ScoringRound extends React.Component {
 			options.map(i => {
 				return (
 					<div>
-						<input type="radio" name={"player" + player} value={i} onChange={(e) => this.changePlayerScore(player, e)}/> 
-						{i} {i == this.props.bids[player] ? "(OK)" : null}
+						<input type="radio" name={"player" + playerId} value={i} onChange={(e) => this.changePlayerScore(playerId, e)}/> 
+						{i} {i == this.props.bids[playerId] ? "(OK)" : null}
 					</div>
 				);
 			})
@@ -50,10 +50,10 @@ export default class ScoringRound extends React.Component {
 	render() {
 		return (
 			<div>
-				{ this.props.players.map(function(name, index) {
+				{ this.props.players.map(function(player, index) {
 					return (
 						<div>
-							{name} (Bid: {this.props.bids[index]}): {this.renderScoreOptions(index)}
+							{player.name} (Bid: {this.props.bids[player.id]}): {this.renderScoreOptions(player.id)}
 							<br/>
 						</div>
 					)

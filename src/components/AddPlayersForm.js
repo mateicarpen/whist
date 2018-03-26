@@ -15,7 +15,9 @@ export default class AddPlayersForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-		let players = this.state.players.split("\n");
+		let players = this.state.players.split("\n").filter(function(name) {
+			return name.trim().length > 1;
+		});
 		this.props.handler(players);
 
 		event.preventDefault();
