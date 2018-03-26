@@ -31,7 +31,9 @@ export default class ScoringRound extends React.Component {
 	}
 
 	resetBids() {
-		this.props.resetBids();
+		if (window.confirm('Are you sure you want to reset this hand?')) {
+			this.props.resetBids();
+		}
 	}
 
 	renderScoreOptions(playerId) {
