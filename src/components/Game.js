@@ -27,6 +27,7 @@ export default class Game extends React.Component {
   	this.addBids = this.addBids.bind(this);
     this.scoreRound = this.scoreRound.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.resetBids = this.resetBids.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +64,16 @@ export default class Game extends React.Component {
     };
 
   	this.setState(state);
+  }
+
+  resetBids() {
+    let state = this.state;
+
+    state["currentBids"] = [];
+    state["gameState"] = "bid";
+    state["history"][state.round] = null;
+
+    this.setState(state);
   }
 
   scoreRound(scores) {
@@ -131,7 +142,7 @@ export default class Game extends React.Component {
   			break;
 
   		case "score":
-  			page = <ScoringRound cards={this.state.rounds[this.state.round]} players={this.getOrderedPlayers()} bids={this.state.currentBids} scoreRound={this.scoreRound}/>
+  			page = <ScoringRound cards={this.state.rounds[this.state.round]} players={this.getOrderedPlayers()} bids={this.state.currentBids} scoreRound={this.scoreRound} resetBids={this.resetBids}/>
   			break;
   	}
 

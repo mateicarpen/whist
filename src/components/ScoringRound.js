@@ -11,6 +11,7 @@ export default class ScoringRound extends React.Component {
 
 		this.changePlayerScore = this.changePlayerScore.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.resetBids = this.resetBids.bind(this);
 	}
 
 	changePlayerScore(player, event) {
@@ -27,6 +28,10 @@ export default class ScoringRound extends React.Component {
     	// La fel si pt componenta de bids
 
 		this.props.scoreRound(this.state.scores);
+	}
+
+	resetBids() {
+		this.props.resetBids();
 	}
 
 	renderScoreOptions(playerId) {
@@ -59,6 +64,7 @@ export default class ScoringRound extends React.Component {
 					)
 				}.bind(this)) }
 
+				<button onClick={this.resetBids}>Reset Bids</button>
 				<button onClick={this.handleSubmit}>Finish round</button>
 			</div>
 		);
