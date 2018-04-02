@@ -6,7 +6,8 @@ export default class BiddingRound extends React.Component {
 
 		let bids = new Array(this.props.players.length).fill(null);
 		this.state = {
-			bids: bids
+			bids: bids,
+			submitDisabled: true
 		}
 
 		this.changePlayerBid = this.changePlayerBid.bind(this);
@@ -20,6 +21,41 @@ export default class BiddingRound extends React.Component {
 		this.setState({
 			bids: bids
 		});
+
+		this.checkBids();
+	}
+
+	checkBids() {
+		let state = this.state;
+		let bidsSoFar = state.bids.filter((el) => el !== null).length;
+
+		state.message = null;
+
+		if (bidsSoFar < this.props.players.length) {
+			let lastPlayerBid = state.bids[this.props.players.length - 1];
+
+			// only last player remaining
+			if (bidsSoFar == this.props.players.length - 1 && lastPlayerBid === null) {
+				let bidsSum = 0;
+
+				for (let i = 0; i < this.props.players.length; i++) {
+					if (state.bids[i] !== null) {
+						bidsSum += parseInt(state.bids[i]);
+					}
+				}
+
+				if (bidsSum <= this.props.cards) {
+					let notAllowed = this.props.cards - bidsSum;
+					state.message = 'Last player not allowed to bid' + notAllowed + '.';
+				}
+			} else {
+				state.message = 'Waiting for all players to bid.';
+			}
+		} else {
+			// al players have submitted their bid
+		}
+
+		this.setState(state);
 	}
 
 	handleSubmit() {
@@ -55,7 +91,9 @@ export default class BiddingRound extends React.Component {
 					)
 				}.bind(this)) }
 
-				<button onClick={this.handleSubmit}>Done bidding</button>
+				<div className="message">{ this.state.message }</div>
+
+				<button onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Done bidding</button>
 			</div>
 		);
 	}

@@ -1,11 +1,11 @@
 TODO
-- sa poti sa refaci mana (daca s-au ars toti gen), sau daca a licitat cineva gresit. Doar in faza de score, poti sa dai redo bids
-- sa arate cat nu are voie ultimul jucator si sa faca disable la optiune
+- sa arate cat nu are voie ultimul jucator si sa faca disable la optiune. Cre ca chiar sa ai voie sa pui bidurile doar pe rand (gen sa faca enable la cate un jucator pe rand). Sa verifice ca toti jucatorii au un bid pus
+- scor - trebuie ca numerele sa dea nr de carti care s-au jucat
+- daca numele are o singura litera, se comporta ca si cum nu ar fi scris nimic
+- nu ar trebui sa te lase sa adaugi mai putin de 3 jucatori
 - email results la sfarsit?
 - sfarsitul jocului, sa apara doar clasamentul mare si optiunea de email, reset game
 - design - pt web si pt mobil
-- daca numele are o singura litera, se comporta ca si cum nu ar fi scris nimic
-- nu ar trebui sa te lase sa adaugi mai putin de 3 jucatori
 
 Refactor:
 - rezolv warningurile din consola
