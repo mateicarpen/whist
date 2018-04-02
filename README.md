@@ -1,9 +1,8 @@
 TODO
-- daca numele are o singura litera, se comporta ca si cum nu ar fi scris nimic
-- nu ar trebui sa te lase sa adaugi mai putin de 3 jucatori
 - email results la sfarsit?
 - sfarsitul jocului, sa apara doar clasamentul mare si optiunea de email, reset game
 - design - pt web si pt mobil
+- public link catre tabela de scor
 
 Refactor:
 - rezolv warningurile din consola

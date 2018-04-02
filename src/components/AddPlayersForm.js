@@ -15,10 +15,17 @@ export default class AddPlayersForm extends React.Component {
 	}
 
 	handleSubmit(event) {
+		let state = this.state;
 		let players = this.state.players.split("\n").filter(function(name) {
-			return name.trim().length > 1;
+			return name.trim().length > 0;
 		});
-		this.props.handler(players);
+
+		if (players.length >= 3 && players.length <= 6) {
+			this.props.handler(players);
+		} else {
+			state.message = "You need between 3 and 6 players to play this game";
+			this.setState(state);
+		}
 
 		event.preventDefault();
 	}
@@ -30,6 +37,9 @@ export default class AddPlayersForm extends React.Component {
 				<p>Enter the names of the players, each on a separate line.</p>
 
 				<textarea value={this.state.value} onChange={this.handleChange}></textarea>
+
+				<div className="message">{ this.state.message }</div>
+
 				<button onClick={this.handleSubmit}>Done</button>
 			</div>	
 		);
