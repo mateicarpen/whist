@@ -1,5 +1,4 @@
 TODO
-- scor - trebuie ca numerele sa dea nr de carti care s-au jucat
 - daca numele are o singura litera, se comporta ca si cum nu ar fi scris nimic
 - nu ar trebui sa te lase sa adaugi mai putin de 3 jucatori
 - email results la sfarsit?

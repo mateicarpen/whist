@@ -6,12 +6,14 @@ export default class ScoringRound extends React.Component {
 
 		let scores = new Array(this.props.players.length).fill(null);
 		this.state = {
-			scores: scores
+			scores: scores,
+			submitDisabled: true
 		}
 
 		this.changePlayerScore = this.changePlayerScore.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.resetBids = this.resetBids.bind(this);
+		this.checkScores = this.checkScores.bind(this);
 	}
 
 	changePlayerScore(player, event) {
@@ -21,6 +23,33 @@ export default class ScoringRound extends React.Component {
 		this.setState({
 			scores: scores
 		});
+
+		this.checkScores();
+	}
+
+	checkScores() {
+		let state = this.state;
+		state.message = null;
+		state.submitDisabled = true;
+
+		let noPlayersWithScore = state.scores.filter((el) => el !== null).length;
+
+		if (noPlayersWithScore < this.props.players.length) {
+			state.message = 'Waiting for all players to score.';
+		} else {
+			let scoresSum = 0;
+			for (let i = 0; i < this.props.players.length; i++) {
+				scoresSum += parseInt(state.scores[i]);
+			}
+
+			if (scoresSum !== this.props.cards) {
+				state.message = 'Scores don\'t add up to ' + this.props.cards;
+			} else {
+				state.submitDisabled = false;
+			}
+		}
+
+		this.setState(state);
 	}
 
 	handleSubmit() {
@@ -68,8 +97,10 @@ export default class ScoringRound extends React.Component {
 					)
 				}.bind(this)) }
 
+				<div className="message">{ this.state.message }</div>
+
 				<button onClick={this.resetBids}>Reset Bids</button>
-				<button onClick={this.handleSubmit}>Finish round</button>
+				<button onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Finish round</button>
 			</div>
 		);
 	}
