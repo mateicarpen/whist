@@ -56,11 +56,17 @@ export default class Game extends React.Component {
 
   addBids(bids) {
   	let state = this.state;
+    let orderedBids = [];
+    let players = this.getOrderedPlayers();
 
-  	state["currentBids"] = bids;
+    for (let i = 0; i < players.length; i++) {
+      orderedBids[players[i].id] = bids[i];
+    }
+
+  	state["currentBids"] = orderedBids;
   	state["gameState"] = "score";
     state["history"][state.round] = {
-      bids: bids
+      bids: orderedBids
     };
 
   	this.setState(state);
@@ -78,10 +84,16 @@ export default class Game extends React.Component {
 
   scoreRound(scores) {
     let state = this.state;
+    let orderedScores = [];
+    let players = this.getOrderedPlayers();
+
+    for (let i = 0; i < players.length; i++) {
+      orderedScores[players[i].id] = scores[i];
+    }
 
     state.history[state.round] = {
       bids: this.state.currentBids,
-      scores: scores
+      scores: orderedScores
     };
     state.currentBids = null;
 

@@ -1,5 +1,4 @@
 TODO
-- sa arate cat nu are voie ultimul jucator si sa faca disable la optiune. Cre ca chiar sa ai voie sa pui bidurile doar pe rand (gen sa faca enable la cate un jucator pe rand). Sa verifice ca toti jucatorii au un bid pus
 - scor - trebuie ca numerele sa dea nr de carti care s-au jucat
 - daca numele are o singura litera, se comporta ca si cum nu ar fi scris nimic
 - nu ar trebui sa te lase sa adaugi mai putin de 3 jucatori

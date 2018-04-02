@@ -36,18 +36,20 @@ export default class ScoringRound extends React.Component {
 		}
 	}
 
-	renderScoreOptions(playerId) {
+	renderScoreOptions(playerIndex, player) {
 		let options = [];
 		for (let i = 0; i <= this.props.cards; i++) {
 			options.push(i);
 		}
 
+		// TODO: sa pasez si bids deja ordonate in componenta, ca sa nu mai aiba nevoie de player id?
+
 		return (
 			options.map(i => {
 				return (
 					<div>
-						<input type="radio" name={"player" + playerId} value={i} onChange={(e) => this.changePlayerScore(playerId, e)}/> 
-						{i} {i == this.props.bids[playerId] ? "(OK)" : null}
+						<input type="radio" name={"player" + playerIndex} value={i} onChange={(e) => this.changePlayerScore(playerIndex, e)}/> 
+						{i} {i == this.props.bids[player.id] ? "(OK)" : null}
 					</div>
 				);
 			})
@@ -60,7 +62,7 @@ export default class ScoringRound extends React.Component {
 				{ this.props.players.map(function(player, index) {
 					return (
 						<div>
-							{player.name} (Bid: {this.props.bids[player.id]}): {this.renderScoreOptions(player.id)}
+							{player.name} (Bid: {this.props.bids[player.id]}): {this.renderScoreOptions(index, player)}
 							<br/>
 						</div>
 					)
