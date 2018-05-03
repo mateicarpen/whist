@@ -160,11 +160,11 @@ export default class Game extends React.Component {
 
     return (
       <div className="game row">
-        <div className="column">
+        <div className="col-xs-12 col-sm-6">
           { this.gameOngoing() ? <h2>Round #{ this.state.round + 1 } ({this.state.rounds[this.state.round]} cards)</h2> : null }
           { page }
         </div>
-        <div className="column">
+        <div className="col-xs-12 col-sm-6">
           { this.gameOngoing() || this.gameFinished() ? <ScoreBoard history={this.state.history} currentBids={this.state.currentBids} players={this.state.players} rounds={this.state.rounds}/> : null}
           { this.gameOngoing() || this.gameFinished() ? <ResetGameButton resetGame={this.resetGame}/> : null }
         </div>

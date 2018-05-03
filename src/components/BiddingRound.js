@@ -78,9 +78,15 @@ export default class BiddingRound extends React.Component {
 		return (
 			options.map(i => {
 				return (
-					<div>
-						<input type="radio" name={"player" + playerIndex} value={i} onChange={(e) => this.changePlayerBid(playerIndex, e)}/> {i}
-					</div>
+					<label class="radio-inline">
+					  <input 
+					  	type="radio" 
+					  	name={"player" + playerIndex}  
+					  	id={"inlineRadio" + playerIndex} 
+					  	value={i}
+					  	onChange={(e) => this.changePlayerBid(playerIndex, e)} /> 
+					  {i}
+					</label>
 				);
 			})
 		)
@@ -92,15 +98,22 @@ export default class BiddingRound extends React.Component {
 				{ this.props.players.map(function(player, index) {
 					return (
 						<div>
-							{player.name}: {this.renderBidOptions(index)}
+							{player.name}: 
 							<br/>
+							{this.renderBidOptions(index)}
+							<br/><br/>
 						</div>
 					)
 				}.bind(this)) }
 
 				<div className="message">{ this.state.message }</div>
 
-				<button onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Done bidding</button>
+				<button 
+					className="btn btn-success" 
+					onClick={this.handleSubmit} 
+					disabled={this.state.submitDisabled}>
+					Done bidding
+				</button>
 			</div>
 		);
 	}

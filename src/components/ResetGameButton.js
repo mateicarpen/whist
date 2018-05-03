@@ -15,7 +15,7 @@ export default class ResetGameButton extends React.Component {
 
 	render() {
 		return (
-			<button onClick={this.handleClick}>Reset Game</button>
+			<button className="btn btn-default" onClick={this.handleClick}>Reset Game</button>
 		);
 	}
 }

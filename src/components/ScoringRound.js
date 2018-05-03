@@ -76,10 +76,14 @@ export default class ScoringRound extends React.Component {
 		return (
 			options.map(i => {
 				return (
-					<div>
-						<input type="radio" name={"player" + playerIndex} value={i} onChange={(e) => this.changePlayerScore(playerIndex, e)}/> 
-						{i} {i == this.props.bids[player.id] ? "(OK)" : null}
-					</div>
+					<label class="radio-inline">
+					  <input 
+					  	type="radio" 
+					  	name={"player" + playerIndex} 
+					  	value={i}
+					  	onChange={(e) => this.changePlayerScore(playerIndex, e)} /> 
+					  {i} {i == this.props.bids[player.id] ? "(OK)" : null}
+					</label>
 				);
 			})
 		)
@@ -91,16 +95,28 @@ export default class ScoringRound extends React.Component {
 				{ this.props.players.map(function(player, index) {
 					return (
 						<div>
-							{player.name} (Bid: {this.props.bids[player.id]}): {this.renderScoreOptions(index, player)}
+							{player.name}: 
 							<br/>
+							{this.renderScoreOptions(index, player)}
+							<br/><br/>
 						</div>
 					)
 				}.bind(this)) }
 
 				<div className="message">{ this.state.message }</div>
 
-				<button onClick={this.resetBids}>Reset Bids</button>
-				<button onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Finish round</button>
+				<button 
+					className="btn btn-default pull-right" 
+					onClick={this.resetBids}>
+					Reset Bids
+				</button>
+				
+				<button 
+					className="btn btn-success"
+					onClick={this.handleSubmit} 
+					disabled={this.state.submitDisabled}>
+					Finish round
+				</button>
 			</div>
 		);
 	}

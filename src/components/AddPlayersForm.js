@@ -36,11 +36,16 @@ export default class AddPlayersForm extends React.Component {
 				<h2>Add Players</h2>
 				<p>Enter the names of the players, each on a separate line.</p>
 
-				<textarea value={this.state.value} onChange={this.handleChange}></textarea>
+				<textarea 
+					className="form-control" 
+					value={this.state.value} 
+					onChange={this.handleChange}
+					rows="6"
+				></textarea>
 
 				<div className="message">{ this.state.message }</div>
 
-				<button onClick={this.handleSubmit}>Done</button>
+				<button className="btn btn-success" onClick={this.handleSubmit}>Done</button>
 			</div>	
 		);
 	}	

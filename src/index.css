@@ -1,10 +1,19 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  margin: 0 20px;
+}
+
+h2 {
+  font-size: 21px;
+  margin-top: 15px;
 }
 
 ol, ul {
   padding-left: 30px;
+}
+
+.startButton {
+  margin-top: 15px;
 }
 
 .board-row:after {
@@ -60,6 +69,10 @@ ol, ul {
     clear: both;
 }
 
+.scoreBoard {
+  padding-bottom: 10px;
+}
+
 .scoreBoard table {
     border-collapse: collapse;
     border: 1px solid black;
@@ -100,4 +113,18 @@ ol, ul {
 
 .scoreBoard table td.bid.negativePrize {
     background-color: #ffb8b8;
+}
+
+.game .radio-inline {
+  padding-left: 17px;
+}
+
+.game .radio-inline input[type=radio] {
+  margin-left: -15px;
+}
+
+.message{
+  color: #6cdc6c;
+  font-weight: 100;
+  padding-bottom: 20px;
 }
