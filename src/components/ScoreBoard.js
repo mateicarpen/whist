@@ -24,21 +24,39 @@ export default class ScoreBoard extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{ this.props.rounds.map(function(round, roundNo) {
+						{ this.props.rounds.map((round, roundNo) => {
 							return (
 								<tr>
 									<td>{round}</td>
+
 									{ this.props.players.map(function(name, playerNo) {
 										let score = scores[roundNo][playerNo];
+										let bidClasses = ["bid"];
+
+										if (score.wrong) {
+											bidClasses.push("wrong");
+										}
+
+										if (score.positivePrize) {
+											bidClasses.push("positivePrize");
+										}
+
+										if (score.negativePrize) {
+											bidClasses.push("negativePrize");
+										}
 
 										return [
-											<td className="score">{ score.score }</td>,
-											<td className={"bid " + (score.wrong ? 'wrong ' : '') + (score.positivePrize ? "positivePrize " : "") + (score.negativePrize ? "negativePrize " : "")}>{ score.bid }</td>
+											<td className = "score">
+												{ score.score }
+											</td>,
+											<td className = { bidClasses.join(" ") }>
+												{ score.bid }
+											</td>
 										];
 									}.bind(this)) }
 								</tr>
 							);
-						}.bind(this)) }
+						}) }
 					</tbody>
 				</table>
 			</div>
@@ -48,9 +66,11 @@ export default class ScoreBoard extends React.Component {
 	/**
 	 * Returns an array of type:
 	 * scores[round][player] = {
+	 *   bid: 2,
 	 *   score: 50, 
 	 *   wrong: false, 
-	 *   prize: true
+	 *   positivePrize: true,
+	 *   negativePrize: false
 	 * }
 	 *
 	 * @return array
