@@ -15,19 +15,18 @@ export default class BiddingRound extends React.Component {
     }
 
     changePlayerBid(player, event) {
-        let bids = Object.assing({}, this.state.bids);
+        let bids = this.state.bids.slice();
         bids[player] = event.target.value;
 
         this.setState({ bids });
-
-        this.checkBids();
+        this.checkBids(bids);
     }
 
-    checkBids() {
+    checkBids(bids) {
         let message = null;
         let submitDisabled = true;
 
-        let bidsExceptLastPlayer = this.state.bids
+        let bidsExceptLastPlayer = bids
             .slice(0, -1)
             .filter((el) => el !== null)
             .length;
@@ -40,8 +39,8 @@ export default class BiddingRound extends React.Component {
 
             // don't add last player's bid
             for (let i = 0; i < this.props.players.length - 1; i++) {
-                if (state.bids[i] !== null) {
-                    bidsSum += parseInt(state.bids[i]);
+                if (bids[i] !== null) {
+                    bidsSum += parseInt(bids[i]);
                 }
             }
 
@@ -53,9 +52,9 @@ export default class BiddingRound extends React.Component {
                 message = 'Last player can bid anything.';
             }
 
-            let lastPlayerBid = this.state.bids[this.props.players.length - 1];
+            let lastPlayerBid = bids[this.props.players.length - 1];
             if (lastPlayerBid !== null && parseInt(lastPlayerBid) !== notAllowed) {
-                state.submitDisabled = false;
+                submitDisabled = false;
             }
         }
 
@@ -81,8 +80,8 @@ export default class BiddingRound extends React.Component {
                             name = { "player" + playerIndex }
                             id = { "inlineRadio" + playerIndex }
                             value = { i }
-                            onChange={ (e) => this.changePlayerBid(playerIndex, e) } />
-                        {i}
+                            onChange = { (e) => this.changePlayerBid(playerIndex, e) } />
+                        { i }
                     </label>
                 );
             })

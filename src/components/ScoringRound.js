@@ -17,26 +17,25 @@ export default class ScoringRound extends React.Component {
 	}
 
 	changePlayerScore(player, event) {
-		let scores = Object.assign({}, this.state.scores);
+		let scores = this.state.scores.slice();
 		scores[player] = event.target.value;
 
 		this.setState({ scores });
-
-		this.checkScores();
+		this.checkScores(scores);
 	}
 
-	checkScores() {
+	checkScores(scores) {
 		let message = null;
 		let submitDisabled = true;
 
-		let submittedScoresCount = this.state.scores.filter((el) => el !== null).length;
+		let submittedScoresCount = scores.filter((el) => el !== null).length;
 
 		if (submittedScoresCount < this.props.players.length) {
 			message = 'Waiting for all players to score.';
 		} else {
 			let scoresSum = 0;
 			this.props.players.forEach((player, index) => {
-				scoresSum += parseInt(this.state.scores[index]);
+				scoresSum += parseInt(scores[index]);
 			});
 
 			if (scoresSum !== this.props.cards) {
