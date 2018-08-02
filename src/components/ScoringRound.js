@@ -35,11 +35,11 @@ export default class ScoringRound extends React.Component {
 		} else {
 			let scoresSum = 0;
 			this.props.players.forEach((player, index) => {
-				scoresSum += parseInt(scores[index]);
+				scoresSum += parseInt(scores[index], 10);
 			});
 
-			if (scoresSum !== this.props.cards) {
-				message = `Scores don't add up to ${this.props.cards}`;
+			if (scoresSum !== this.props.cardsCount) {
+				message = `Scores don't add up to ${this.props.cardsCount}`;
 			} else {
 				submitDisabled = false;
 			}
@@ -49,18 +49,18 @@ export default class ScoringRound extends React.Component {
 	}
 
 	handleSubmit() {
-		this.props.scoreRound(this.state.scores);
+		this.props.onSubmit(this.state.scores);
 	}
 
 	resetBids() {
 		if (window.confirm('Are you sure you want to reset this hand?')) {
-			this.props.resetBids();
+			this.props.onReset();
 		}
 	}
 
 	renderScoreOptions(playerIndex, player) {
 		let options = [];
-		for (let i = 0; i <= this.props.cards; i++) {
+		for (let i = 0; i <= this.props.cardsCount; i++) {
 			options.push(i);
 		}
 
@@ -69,11 +69,11 @@ export default class ScoringRound extends React.Component {
 				return (
 					<label className="radio-inline">
 					  <input 
-					  	type = "radio"
-					  	name = {"player" + playerIndex}
-					  	value = { i }
-					  	onChange = { (e) => this.changePlayerScore(playerIndex, e) } />
-					  {i} { i === parseInt(this.props.bids[player.id]) ? "(OK)" : null }
+					  	type="radio"
+					  	name={"player" + playerIndex}
+					  	value={ i }
+					  	onChange={ (e) => this.changePlayerScore(playerIndex, e) } />
+					  {i} { i === parseInt(this.props.bids[player.id], 10) ? "(OK)" : null }
 					</label>
 				);
 			})
@@ -99,16 +99,16 @@ export default class ScoringRound extends React.Component {
                 </div>
 
 				<button 
-					className = "btn btn-default pull-right"
-					onClick = { this.resetBids }
+					className="btn btn-default pull-right"
+					onClick={ this.resetBids }
                 >
 					Reset Bids
 				</button>
 				
 				<button 
-					className = "btn btn-success"
-					onClick = { this.handleSubmit }
-					disabled = { this.state.submitDisabled }
+					className="btn btn-success"
+					onClick={ this.handleSubmit }
+					disabled={ this.state.submitDisabled }
                 >
 					Finish round
 				</button>

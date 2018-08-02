@@ -18,15 +18,15 @@ export default class ScoreBoard extends React.Component {
 					<thead>
 						<tr>
 							<td>&nbsp;</td>
-							{ this.props.players.map(function(name) {
-								return <th colSpan="2">{name}</th>
+							{ this.props.players.map(function(name, index) {
+								return <th key={ index } colSpan="2">{name}</th>
 							}) }
 						</tr>
 					</thead>
 					<tbody>
 						{ this.props.rounds.map((round, roundNo) => {
 							return (
-								<tr>
+								<tr key={ roundNo }>
 									<td>{round}</td>
 
 									{ this.props.players.map(function(name, playerNo) {
@@ -46,14 +46,14 @@ export default class ScoreBoard extends React.Component {
 										}
 
 										return [
-											<td className = "score">
+											<td key={ 'score' + playerNo } className="score">
 												{ score.score }
 											</td>,
-											<td className = { bidClasses.join(" ") }>
+											<td key={ 'bid' + playerNo } className={ bidClasses.join(" ") }>
 												{ score.bid }
 											</td>
 										];
-									}.bind(this)) }
+									}) }
 								</tr>
 							);
 						}) }
@@ -93,11 +93,11 @@ export default class ScoreBoard extends React.Component {
 
 				if (this.props.history[round] && this.props.history[round]['scores']) {
 					bid = this.props.history[round]['bids'][player];
-					let actual = this.props.history[round]['scores'][player]; // TODO: rename all to 'actual'?
+					let actual = this.props.history[round]['scores'][player];
 					let cardsPerRound = this.props.rounds[round];
 
 					if (bid === actual) {
-						score += 5 + parseInt(bid);
+						score += 5 + parseInt(bid, 10);
 						lostInARow = 0;
 
 						if (cardsPerRound > 1) {
@@ -110,7 +110,7 @@ export default class ScoreBoard extends React.Component {
 							wonInARow = 0;
 						}
 					} else {
-						score -= Math.abs(parseInt(bid) - parseInt(actual));
+						score -= Math.abs(parseInt(bid, 10) - parseInt(actual, 10));
 						wrong = true;
 						wonInARow = 0;
 						

@@ -9,19 +9,18 @@ export const addPlayers = (players, rounds) => ({
     payload: { players, rounds }
 });
 
-export const addBids = (bids, history) => ({
+export const addBids = (bids) => ({
     type: ADD_BIDS,
-    payload: { bids, history }
+    payload: { bids }
 });
 
-export const resetBids = (history) => ({
-    type: RESET_BIDS,
-    payload: { history }
+export const resetBids = () => ({
+    type: RESET_BIDS
 });
 
-export const addScores = (round, history) => ({
+export const addScores = (scores) => ({
     type: ADD_SCORES,
-    payload: { round, history }
+    payload: { scores }
 });
 
 export const resetGame = () => ({

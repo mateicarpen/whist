@@ -9,15 +9,15 @@ export default class ResetGameButton extends React.Component {
 
 	handleClick() {
 		if (window.confirm('Are you sure you want to reset this game?')) {
-			this.props.resetGame();
+			this.props.onClick();
 		}
 	}
 
 	render() {
 		return (
 			<button
-				className = "btn btn-default"
-				onClick = { this.handleClick }
+				className="btn btn-default"
+				onClick={ this.handleClick }
 			>
 				Reset Game
 			</button>

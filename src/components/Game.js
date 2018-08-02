@@ -7,16 +7,16 @@ import BiddingRound from './BiddingRound';
 import ScoringRound from './ScoringRound';
 import ScoreBoard from './ScoreBoard';
 import ResetGameButton from './ResetGameButton';
-import {addBids, addPlayers, addScores, resetBids, resetGame, startGame} from "../actions";
+import {addBids, addPlayers, addScores, resetBids, resetGame, startGame} from "../state/actions";
+import {ADDING_PLAYERS, BID, FINISHED, NOT_STARTED, SCORE} from "../state/game-states";
 
 const mapStateToProps = state => {
     return {
         gameState: state.gameState,
         players: state.players,
         rounds: state.rounds,
-        round: state.round,
-        history: state.history,
-        currentBids: state.currentBids
+        currentRound: state.currentRound,
+        history: state.history
     }
 };
 
@@ -24,9 +24,9 @@ const mapDispatchToProps = dispatch => {
     return {
         startGame: () => dispatch(startGame()),
         addPlayers: (players, round) => dispatch(addPlayers(players, round)),
-        addBids: (bids, history) => dispatch(addBids(bids, history)),
-        resetBids: (history) => dispatch(resetBids(history)),
-        addScores: (round, history) => dispatch(addScores(round, history)),
+        addBids: (bids) => dispatch(addBids(bids)),
+        resetBids: () => dispatch(resetBids()),
+        addScores: (scores) => dispatch(addScores(scores)),
         resetGame: () => dispatch(resetGame())
     };
 };
@@ -38,7 +38,7 @@ class Game extends React.Component {
         this.startGame = this.startGame.bind(this);
         this.addPlayers = this.addPlayers.bind(this);
         this.addBids = this.addBids.bind(this);
-        this.scoreRound = this.scoreRound.bind(this);
+        this.addScores = this.addScores.bind(this);
         this.resetGame = this.resetGame.bind(this);
         this.resetBids = this.resetBids.bind(this);
     }
@@ -54,45 +54,29 @@ class Game extends React.Component {
     }
 
     addBids(bids) {
-        let orderedBids = [];
         let players = this.getOrderedPlayers();
-        let history = Object.assign({}, this.props.history);
+        let orderedBids = [];
 
         players.forEach((player, index) => {
            orderedBids[player.id] = bids[index];
         });
 
-        history[this.props.round] = {
-            bids: orderedBids
-        };
-
-        this.props.addBids(orderedBids, history);
+        this.props.addBids(orderedBids);
     }
 
     resetBids() {
-        let history = Object.assign({}, this.props.history);
-
-        history[this.props.round] = null;
-
-        this.props.resetBids(history);
+        this.props.resetBids();
     }
 
-    scoreRound(scores) {
+    addScores(scores) {
         let orderedScores = [];
-        let round = this.props.round;
-        let history = Object.assign({}, this.props.history);
         let players = this.getOrderedPlayers();
 
         players.forEach((player, index) => {
             orderedScores[player.id] = scores[index];
         });
 
-        history[round] = {
-            bids: this.props.currentBids,
-            scores: orderedScores
-        };
-
-        this.props.addScores(round, history);
+        this.props.addScores(orderedScores);
     }
 
     resetGame() {
@@ -109,9 +93,8 @@ class Game extends React.Component {
             }
         });
 
-
         // don't rotate on the first round
-        for (let i = 1; i <= this.props.round; i++) {
+        for (let i = 1; i <= this.props.currentRound; i++) {
             players = this.rotateArray(players);
         }
 
@@ -154,29 +137,29 @@ class Game extends React.Component {
         let page = null;
 
         switch (this.props.gameState) {
-            case "notStarted":
-                page = <StartScreen handler = { this.startGame } />;
+            case NOT_STARTED:
+                page = <StartScreen onSubmit={ this.startGame } />;
                 break;
 
-            case "addPlayers":
-                page = <AddPlayersForm handler = { this.addPlayers } />;
+            case ADDING_PLAYERS:
+                page = <AddPlayersForm onSubmit={ this.addPlayers } />;
                 break;
 
-            case "bid":
+            case BID:
                 page = <BiddingRound
-                            cards = { this.props.rounds[this.props.round] }
-                            players = { this.getOrderedPlayers() }
-                            addBids = { this.addBids }
+                            cardsCount={ this.getCurrentCardsCount() }
+                            players={ this.getOrderedPlayers() }
+                            onSubmit={ this.addBids }
                        />;
                 break;
 
-            case "score":
+            case SCORE:
                 page = <ScoringRound
-                            cards = { this.props.rounds[this.props.round] }
-                            players = { this.getOrderedPlayers() }
-                            bids = { this.props.currentBids }
-                            scoreRound = { this.scoreRound }
-                            resetBids = { this.resetBids }
+                            cardsCount={ this.getCurrentCardsCount() }
+                            players={ this.getOrderedPlayers() }
+                            bids={ this.getCurrentBids() }
+                            onSubmit={ this.addScores }
+                            onReset={ this.resetBids }
                        />;
                 break;
 
@@ -189,7 +172,7 @@ class Game extends React.Component {
                 <div className="col-xs-12 col-sm-6">
                     { this.gameOngoing() ?
                         <h2>
-                            Round #{this.props.round + 1} ({this.props.rounds[this.props.round]} cards)
+                            Round #{this.props.currentRound + 1} ({ this.getCurrentCardsCount() } cards)
                         </h2>
                         : null}
 
@@ -198,15 +181,14 @@ class Game extends React.Component {
                 <div className="col-xs-12 col-sm-6">
                     { this.gameOngoing() || this.gameFinished() ?
                         <ScoreBoard
-                            history = { this.props.history }
-                            currentBids = { this.props.currentBids }
-                            players = { this.props.players }
-                            rounds = { this.props.rounds }
+                            history={ this.props.history }
+                            players={ this.props.players }
+                            rounds={ this.props.rounds }
                         />
                         : null}
 
                     { this.gameOngoing() || this.gameFinished() ?
-                        <ResetGameButton resetGame = { this.resetGame } />
+                        <ResetGameButton onClick={ this.resetGame } />
                         : null}
                 </div>
             </div>
@@ -214,12 +196,25 @@ class Game extends React.Component {
     }
 
     gameOngoing() {
-        return this.props.gameState === "bid" || this.props.gameState === "score";
+        return this.props.gameState === BID || this.props.gameState === SCORE;
     }
 
     gameFinished() {
-        return this.props.gameState === 'finished';
+        return this.props.gameState === FINISHED;
     }
+
+    getCurrentBids() {
+        if (this.props.history[this.props.currentRound]) {
+            return this.props.history[this.props.currentRound].bids;
+        }
+
+        return null;
+    }
+
+    getCurrentCardsCount() {
+        return this.props.rounds[this.props.currentRound];
+    }
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
