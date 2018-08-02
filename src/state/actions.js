@@ -1,4 +1,4 @@
-import {ADD_BIDS, ADD_PLAYERS, ADD_SCORES, RESET_BIDS, RESET_GAME, START_GAME} from "./action-types";
+import { ADD_BIDS, ADD_PLAYERS, ADD_SCORES, RESET_BIDS, RESET_GAME, START_GAME } from "./action-types";
 
 export const startGame = () => ({
     type: START_GAME

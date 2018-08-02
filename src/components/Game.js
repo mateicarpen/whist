@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import StartScreen from './StartScreen';
 import AddPlayersForm from './AddPlayersForm';
@@ -7,8 +7,8 @@ import BiddingRound from './BiddingRound';
 import ScoringRound from './ScoringRound';
 import ScoreBoard from './ScoreBoard';
 import ResetGameButton from './ResetGameButton';
-import {addBids, addPlayers, addScores, resetBids, resetGame, startGame} from '../state/actions';
-import {ADDING_PLAYERS, BID, FINISHED, NOT_STARTED, SCORE} from '../state/game-states';
+import { addBids, addPlayers, addScores, resetBids, resetGame, startGame } from '../state/actions';
+import { ADDING_PLAYERS, BID, FINISHED, NOT_STARTED, SCORE } from '../state/game-states';
 import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
@@ -59,7 +59,7 @@ class Game extends React.Component {
         let orderedBids = [];
 
         players.forEach((player, index) => {
-           orderedBids[player.id] = bids[index];
+            orderedBids[player.id] = bids[index];
         });
 
         this.props.addBids(orderedBids);
@@ -139,29 +139,29 @@ class Game extends React.Component {
 
         switch (this.props.gameState) {
             case NOT_STARTED:
-                page = <StartScreen onSubmit={ this.startGame } />;
+                page = <StartScreen onSubmit={ this.startGame }/>;
                 break;
 
             case ADDING_PLAYERS:
-                page = <AddPlayersForm onSubmit={ this.addPlayers } />;
+                page = <AddPlayersForm onSubmit={ this.addPlayers }/>;
                 break;
 
             case BID:
                 page = <BiddingRound
-                            cardsCount={ this.getCurrentCardsCount() }
-                            players={ this.getOrderedPlayers() }
-                            onSubmit={ this.addBids }
-                       />;
+                    cardsCount={ this.getCurrentCardsCount() }
+                    players={ this.getOrderedPlayers() }
+                    onSubmit={ this.addBids }
+                />;
                 break;
 
             case SCORE:
                 page = <ScoringRound
-                            cardsCount={ this.getCurrentCardsCount() }
-                            players={ this.getOrderedPlayers() }
-                            bids={ this.getCurrentBids() }
-                            onSubmit={ this.addScores }
-                            onReset={ this.resetBids }
-                       />;
+                    cardsCount={ this.getCurrentCardsCount() }
+                    players={ this.getOrderedPlayers() }
+                    bids={ this.getCurrentBids() }
+                    onSubmit={ this.addScores }
+                    onReset={ this.resetBids }
+                />;
                 break;
 
             default:
@@ -173,9 +173,9 @@ class Game extends React.Component {
                 <div className="col-xs-12 col-sm-6">
                     { this.gameOngoing() ?
                         <h2>
-                            Round #{this.props.currentRound + 1} ({ this.getCurrentCardsCount() } cards)
+                            Round #{ this.props.currentRound + 1 } ({ this.getCurrentCardsCount() } cards)
                         </h2>
-                        : null}
+                        : null }
 
                     { page }
                 </div>
@@ -186,11 +186,11 @@ class Game extends React.Component {
                             players={ this.props.players }
                             rounds={ this.props.rounds }
                         />
-                        : null}
+                        : null }
 
                     { this.gameOngoing() || this.gameFinished() ?
-                        <ResetGameButton onClick={ this.resetGame } />
-                        : null}
+                        <ResetGameButton onClick={ this.resetGame }/>
+                        : null }
                 </div>
             </div>
         );

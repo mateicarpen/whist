@@ -12,8 +12,8 @@ import Game from './components/Game';
 const store = createStore(rootReducer);
 
 ReactDOM.render(
-    <Provider store = { store }>
-        <Game />
+    <Provider store={ store }>
+        <Game/>
     </Provider>,
     document.getElementById('root')
 );
