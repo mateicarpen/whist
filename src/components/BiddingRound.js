@@ -40,7 +40,7 @@ class BiddingRound extends React.Component {
             // don't add last player's bid
             for (let i = 0; i < this.props.players.length - 1; i++) {
                 if (bids[i] !== null) {
-                    bidsSum += parseInt(bids[i], 10);
+                    bidsSum += bids[i];
                 }
             }
 
@@ -53,7 +53,7 @@ class BiddingRound extends React.Component {
             }
 
             let lastPlayerBid = bids[this.props.players.length - 1];
-            if (lastPlayerBid !== null && parseInt(lastPlayerBid, 10) !== notAllowed) {
+            if (lastPlayerBid !== null && lastPlayerBid !== notAllowed) {
                 submitDisabled = false;
             }
         }

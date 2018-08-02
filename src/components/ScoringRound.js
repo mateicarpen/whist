@@ -35,8 +35,8 @@ class ScoringRound extends React.Component {
 			message = 'Waiting for all players to score.';
 		} else {
 			let scoresSum = 0;
-			this.props.players.forEach((player, index) => {
-				scoresSum += parseInt(scores[index], 10);
+			scores.forEach((score) => {
+				scoresSum += score;
 			});
 
 			if (scoresSum !== this.props.cardsCount) {
@@ -74,7 +74,7 @@ class ScoringRound extends React.Component {
 					  	name={"player" + playerIndex}
 					  	value={ i }
 					  	onChange={ (e) => this.changePlayerScore(playerIndex, e) } />
-					  {i} { i === parseInt(this.props.bids[player.id], 10) ? "(OK)" : null }
+					  {i} { i === this.props.bids[player.id] ? "(OK)" : null }
 					</label>
 				);
 			})

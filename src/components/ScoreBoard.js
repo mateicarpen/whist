@@ -98,7 +98,7 @@ class ScoreBoard extends React.Component {
 					let cardsPerRound = this.props.rounds[round];
 
 					if (bid === actual) {
-						score += 5 + parseInt(bid, 10);
+						score += 5 + bid;
 						lostInARow = 0;
 
 						if (cardsPerRound > 1) {
@@ -111,7 +111,7 @@ class ScoreBoard extends React.Component {
 							wonInARow = 0;
 						}
 					} else {
-						score -= Math.abs(parseInt(bid, 10) - parseInt(actual, 10));
+						score -= Math.abs(bid - actual);
 						wrong = true;
 						wonInARow = 0;
 						
