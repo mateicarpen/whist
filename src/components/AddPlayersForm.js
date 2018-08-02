@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default class AddPlayersForm extends React.Component {
+class AddPlayersForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -61,3 +62,9 @@ export default class AddPlayersForm extends React.Component {
         );
     }
 }
+
+AddPlayersForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};
+
+export default AddPlayersForm;

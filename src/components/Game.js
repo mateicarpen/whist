@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
 import StartScreen from './StartScreen';
 import AddPlayersForm from './AddPlayersForm';
@@ -7,8 +7,9 @@ import BiddingRound from './BiddingRound';
 import ScoringRound from './ScoringRound';
 import ScoreBoard from './ScoreBoard';
 import ResetGameButton from './ResetGameButton';
-import {addBids, addPlayers, addScores, resetBids, resetGame, startGame} from "../state/actions";
-import {ADDING_PLAYERS, BID, FINISHED, NOT_STARTED, SCORE} from "../state/game-states";
+import {addBids, addPlayers, addScores, resetBids, resetGame, startGame} from '../state/actions';
+import {ADDING_PLAYERS, BID, FINISHED, NOT_STARTED, SCORE} from '../state/game-states';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
     return {
@@ -214,7 +215,14 @@ class Game extends React.Component {
     getCurrentCardsCount() {
         return this.props.rounds[this.props.currentRound];
     }
-
 }
+
+Game.propTypes = {
+    gameState: PropTypes.string.isRequired,
+    players: PropTypes.arrayOf(PropTypes.string),
+    rounds: PropTypes.arrayOf(PropTypes.number),
+    currentRound: PropTypes.number,
+    history: PropTypes.arrayOf(PropTypes.object)
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default function StartScreen(props) {
+function StartScreen(props) {
 	return (
 		<button
 			className="btn btn-success startButton"
@@ -10,3 +11,9 @@ export default function StartScreen(props) {
 		</button>
 	);
 }
+
+StartScreen.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};
+
+export default StartScreen;

@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default class ResetGameButton extends React.Component {
+class ResetGameButton extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -24,3 +25,10 @@ export default class ResetGameButton extends React.Component {
 		);
 	}
 }
+
+
+ResetGameButton.propTypes = {
+    onClick: PropTypes.func.isRequired,
+};
+
+export default ResetGameButton;

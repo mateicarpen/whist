@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default class BiddingRound extends React.Component {
+class BiddingRound extends React.Component {
     constructor(props) {
         super(props);
 
@@ -15,7 +16,7 @@ export default class BiddingRound extends React.Component {
 
     handleChangePlayerBid(player, event) {
         let bids = this.state.bids.slice();
-        bids[player] = event.target.value;
+        bids[player] = parseInt(event.target.value, 10);
 
         this.setState({ bids });
         this.checkBids(bids);
@@ -116,3 +117,11 @@ export default class BiddingRound extends React.Component {
         );
     }
 }
+
+BiddingRound.propTypes = {
+    cardsCount: PropTypes.number.isRequired,
+    players: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onSubmit: PropTypes.func.isRequired
+};
+
+export default BiddingRound;

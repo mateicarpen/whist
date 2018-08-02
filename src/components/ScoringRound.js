@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default class ScoringRound extends React.Component {
+class ScoringRound extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -18,7 +19,7 @@ export default class ScoringRound extends React.Component {
 
 	changePlayerScore(player, event) {
 		let scores = this.state.scores.slice();
-		scores[player] = event.target.value;
+		scores[player] = parseInt(event.target.value, 10);
 
 		this.setState({ scores });
 		this.checkScores(scores);
@@ -67,7 +68,7 @@ export default class ScoringRound extends React.Component {
 		return (
 			options.map(i => {
 				return (
-					<label className="radio-inline">
+					<label key={ i } className="radio-inline">
 					  <input 
 					  	type="radio"
 					  	name={"player" + playerIndex}
@@ -85,7 +86,7 @@ export default class ScoringRound extends React.Component {
 			<div>
 				{ this.props.players.map((player, index) => {
 					return (
-						<div>
+						<div key={ index }>
 							{ player.name }:
 							<br/>
 							{ this.renderScoreOptions(index, player) }
@@ -116,3 +117,13 @@ export default class ScoringRound extends React.Component {
 		);
 	}
 }
+
+ScoringRound.propTypes = {
+    cardsCount: PropTypes.number.isRequired,
+    players: PropTypes.arrayOf(PropTypes.object).isRequired,
+	bids: PropTypes.arrayOf(PropTypes.number).isRequired,
+    onSubmit: PropTypes.func.isRequired,
+	onReset: PropTypes.func.isRequired
+};
+
+export default ScoringRound;

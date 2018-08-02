@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-export default class ScoreBoard extends React.Component {
+class ScoreBoard extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -149,3 +150,11 @@ export default class ScoreBoard extends React.Component {
 		return scores;
 	}
 }
+
+ScoreBoard.propTypes = {
+    history: PropTypes.arrayOf(PropTypes.object).isRequired,
+    players: PropTypes.arrayOf(PropTypes.string).isRequired,
+    rounds: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
+export default ScoreBoard;
